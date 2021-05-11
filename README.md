@@ -1,2 +1,2 @@
 # PAB
-Preparation ARCH linux  Based systems
+Preparation ARCH linux Based systems
