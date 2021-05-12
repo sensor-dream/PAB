@@ -1,0 +1,43 @@
+#!/bin/env sh
+
+gst=/usr/share/gnome-shell/gnome-shell-theme.gresource
+workdir=$(mktemp -d)
+
+for r in $(gresource list $gst); do
+  r=${r#\/org\/gnome\/shell/}
+  if [ ! -d $workdir/${r%/*} ]; then
+    mkdir -p $workdir/${r%/*}
+  fi
+done
+
+for r in $(gresource list $gst); do
+  gresource extract $gst $r >$workdir/${r#\/org\/gnome\/shell/}
+done
+
+cp Log-in-screen-background-image.png ${workdir}/theme/Log-in-screen-background-image.png
+resource=()
+cd "${workdir}/theme"
+for r in $(find * -type f -not -name "gnome-shell-theme.gresource.xml" -exec echo {} \;); do
+  resource+="<file>${r}</file>"$'\n'
+done
+cat <<EE | tee "gnome-shell-theme.gresource.xml"
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+<gresource prefix="/org/gnome/shell/theme">
+${resource[@]}</gresource>
+</gresources>
+EE
+
+echo -e '\n/* Modify Screen Shield */ #lockDialogGroup { background: url("resource:///org/gnome/shell/theme/Log-in-screen-background-image.png"); background-size: cover; background-repeat: no-repeat; }\n' | tee -a gnome-shell.css >/dev//null
+
+glib-compile-resources gnome-shell-theme.gresource.xml
+
+if [[ -f /usr/share/gnome-shell/gnome-shell-theme.gresource.old ]]; then
+  sudo mv "/usr/share/gnome-shell/gnome-shell-theme.gresource" "/usr/share/gnome-shell/gnome-shell-theme.gresource.$(date +%s)"
+else
+  sudo mv "/usr/share/gnome-shell/gnome-shell-theme.gresource" "/usr/share/gnome-shell/gnome-shell-theme.gresource.old"
+fi
+
+sudo mv gnome-shell-theme.gresource /usr/share/gnome-shell/gnome-shell-theme.gresource
+
+rm -f -r ${workdir}
