@@ -10,6 +10,8 @@ fi
 
 [[ -d /etc/dconf/db/gdm.d ]] || sudo mkdir -p /etc/dconf/db/gdm.d
 
+sudo pamac install bibata-rainbow-cursor-theme --no-confirm
+
 if [[ ! -f /etc/dconf/db/gdm.d/10-cursor-settings ]]; then
   cat <<EE | sudo tee /etc/dconf/db/gdm.d/10-cursor-settings >/dev/null
 [org/gnome/desktop/interface]
@@ -17,4 +19,14 @@ cursor-theme='Bibata-Rainbow-Original'
 EE
 fi
 
+if [[ ! -f /etc/dconf/db/gdm.d/03-scaling ]]; then
+  cat <<EE | sudo tee /etc/dconf/db/gdm.d/03-scaling >/dev/null
+[org/gnome/desktop/interface]
+# Default 1.0
+text-scaling-factor='1.25'
+EE
+fi
+
 sudo dconf update
+
+gsettings set org.gnome.desktop.interface cursor-theme 'Bibata-Rainbow-Original'
