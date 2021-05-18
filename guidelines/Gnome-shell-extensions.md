@@ -3,6 +3,7 @@
 #### My preferences:
 
 ```
+https://extensions.gnome.org/extension/841/freon
 https://extensions.gnome.org/extension/97/coverflow-alt-tab
 https://extensions.gnome.org/extension/307/dash-to-dock
 https://extensions.gnome.org/extension/1160/dash-to-panel
