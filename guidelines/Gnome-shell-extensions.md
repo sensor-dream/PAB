@@ -17,4 +17,5 @@ https://extensions.gnome.org/extension/3985/shu-zhi
 https://extensions.gnome.org/extension/1476/unlock-dialog-background
 https://extensions.gnome.org/extension/2890/tray-icons-reloaded
 https://extensions.gnome.org/extension/2986/runcat
+https://extensions.gnome.org/extension/779/clipboard-indicator
 ```
